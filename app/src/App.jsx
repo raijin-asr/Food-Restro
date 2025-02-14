@@ -1,10 +1,28 @@
+import { useState } from "react";
 import styled from "styled-components"
 
+const BASE_URL= "http://localhost:9000" //database url
+
 const App = () => {
+  const [data,setData]= useState(null);
+  
+  const fetchData= async () => {
+    try{
+      const response= await fetch(BASE_URL)
+
+      const json= await response.json()
+    setData(json);
+    }
+    catch(error){}
+  };
+
+  fetchData();
+
+
   return <Container>
     <TopContainer>
       <div className="logo">
-        <img src="logo.png"/>
+        <img src="/logoA.png"/>
       </div>
       <div className="search">
         <input placeholder="Search food"/>
@@ -16,6 +34,12 @@ const App = () => {
       <Button>Lunch</Button>
       <Button>Dinner</Button>
     </FilterContainer>
+
+    <FoodCardsContainer>
+      <FoodCards>
+
+      </FoodCards>
+    </FoodCardsContainer>
   </Container>;
 };
 
@@ -44,6 +68,11 @@ const TopContainer= styled.section`
       padding:0 10px;
     }
   }
+
+  .logo img{
+  height:100px;
+  width:150px;
+  }
 `;
 
 
@@ -61,4 +90,14 @@ const Button=styled.button`
   border: none;
   color: white;
 
+`;
+
+const FoodCardsContainer= styled.section`
+background-image: url("/bg.jpeg");
+background-size: cover;
+height: calc(100vh - 200px);
+
+`;
+
+const FoodCards= styled.div`
 `;
