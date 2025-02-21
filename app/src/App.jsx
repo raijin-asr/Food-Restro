@@ -1,23 +1,38 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components"
+import Search from "./components/Search/Search";
 
-const BASE_URL= "http://localhost:9000" //database url
+export const BASE_URL= "http://localhost:9000" //database url
 
 const App = () => {
   const [data,setData]= useState(null);
+  const [loading,setLoading]= useState(false);
+  const [error,setError]= useState(null);
   
-  const fetchData= async () => {
-    try{
-      const response= await fetch(BASE_URL)
+  useEffect(() =>{
 
-      const json= await response.json()
-    setData(json);
-    }
-    catch(error){}
-  };
+    const fetchData= async () => {
+      try{
+        const response= await fetch(BASE_URL)
+  
+        const json= await response.json()
+        setData(json);
+        setLoading(false);
+  
+      }
+      catch(error){
+        setError("Cannot fetch data!")
+      }
+    };
 
-  fetchData();
+    fetchData(); //calling function inside useEffect
 
+  }, []);
+
+  if(error){
+    return <div>{error}</div>
+  }
+  if (loading) return <div>{loading}</div>
 
   return <Container>
     <TopContainer>
@@ -35,12 +50,8 @@ const App = () => {
       <Button>Dinner</Button>
     </FilterContainer>
 
-    <FoodCardsContainer>
-      <FoodCards>
-
-      </FoodCards>
-    </FoodCardsContainer>
-  </Container>;
+    <Search data={data} />
+  </Container>
 };
 
 export default App;
@@ -80,10 +91,10 @@ const FilterContainer=styled.section`
 display: flex;
 justify-content: center;
 gap:12px;
-
+padding-bottom: 40px;
 `;
 
-const Button=styled.button`
+export const Button=styled.button`
   background: red;
   border-radius: 5px;
   padding: 6px 12px;
@@ -92,12 +103,3 @@ const Button=styled.button`
 
 `;
 
-const FoodCardsContainer= styled.section`
-background-image: url("/bg.jpeg");
-background-size: cover;
-height: calc(100vh - 200px);
-
-`;
-
-const FoodCards= styled.div`
-`;
