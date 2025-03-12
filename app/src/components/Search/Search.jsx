@@ -1,9 +1,10 @@
 import styled from "styled-components"
-import { BASE_URL, Button } from "../../App";
+import { BASE_URL, Button, Container } from "../../App";
 
 const Search = ({data}) => {
   return (
     <FoodCardsContainer>
+    <Container>
       <FoodCards>
         {data?.map(({image, name, text, price})=> (
           <FoodCard key={name}>
@@ -18,8 +19,9 @@ const Search = ({data}) => {
             <Button>Rs.{price.toFixed(2)}</Button>
             </div>
           </FoodCard>
-        ))}
-      </FoodCards>
+          ))}
+        </FoodCards>
+      </Container>
     </FoodCardsContainer>
   )
 }
@@ -30,7 +32,7 @@ export default Search
 const FoodCardsContainer= styled.section`
 background-image: url("/bg.jpeg");
 background-size: cover;
-height: calc(100vh - 210px);
+min-height: calc(100vh - 210px);
 
 `;
 

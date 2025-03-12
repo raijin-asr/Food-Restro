@@ -8,6 +8,9 @@ const App = () => {
   const [data,setData]= useState(null);
   const [loading,setLoading]= useState(false);
   const [error,setError]= useState(null);
+
+  const [filteredData, setFilteredData]= useState(null);
+  const [selectedBtn, setSelectedBtn]= useState("all");
   
   useEffect(() =>{
 
@@ -17,6 +20,7 @@ const App = () => {
   
         const json= await response.json()
         setData(json);
+        setFilteredData(json)
         setLoading(false);
   
       }
@@ -29,34 +33,86 @@ const App = () => {
 
   }, []);
 
+  const searchFood =(e) => {
+    const searchValue= e.target.value;
+
+    if(searchValue === ""){
+      setFilteredData(null);
+    }
+
+    const filter= data?.filter((food) => 
+      food.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
+    setFilteredData(filter);
+  };
+
+  const filterFood = (type) => {
+    if(type =="all"){
+      setFilteredData(data);
+      setSelectedBtn("all")
+      return;
+    }
+    const filter= data?.filter((food) => 
+      food.type.toLowerCase().includes(type.toLowerCase())
+    );
+
+    setFilteredData(filter);
+    setSelectedBtn(type);
+  };
+
+  const mapButttons =[
+    {
+      name:"All",
+      type:"all",
+    },
+    {
+      name:"Breakfast",
+      type:"breakfast",
+    },
+    {
+      name:"Lunch",
+      type:"lunch",
+    },
+    {
+      name:"Dinner",
+      type:"dinner",
+    }
+  ]
+
   if(error){
     return <div>{error}</div>
   }
   if (loading) return <div>{loading}</div>
 
-  return <Container>
-    <TopContainer>
-      <div className="logo">
-        <img src="/logoA.png"/>
-      </div>
-      <div className="search">
-        <input placeholder="Search food"/>
-      </div>
-    </TopContainer>
-    <FilterContainer>
-      <Button>All</Button>
-      <Button>Breakfast</Button>
-      <Button>Lunch</Button>
-      <Button>Dinner</Button>
-    </FilterContainer>
-
-    <Search data={data} />
-  </Container>
+  return (
+    <>
+    <Container>
+      <TopContainer>
+        <div className="logo">
+          <img src="/logoA.png"/>
+        </div>
+        <div className="search">
+          <input onChange={searchFood} placeholder="Search food"/>
+        </div>
+      </TopContainer>
+      <FilterContainer>
+        {mapButttons.map((value)=>(
+        <Button key={value.name} onClick={() => filterFood(value.type)}>
+          {value.name}
+        </Button>
+        ))
+        }
+        
+      </FilterContainer>
+    </Container>
+    <Search data={filteredData} />
+    </>
+  );
 };
 
 export default App;
 
-const Container= styled.div`
+export const Container= styled.div`
   max-width: 1200px;
   margin: 0 auto;
 `;
@@ -100,6 +156,10 @@ export const Button=styled.button`
   padding: 6px 12px;
   border: none;
   color: white;
+  cursor: pointer;
+  &:hover{
+    background-color:rgb(174, 23, 23);
 
+  }
 `;
 
