@@ -97,7 +97,9 @@ const App = () => {
       </TopContainer>
       <FilterContainer>
         {mapButttons.map((value)=>(
-        <Button key={value.name} onClick={() => filterFood(value.type)}>
+        <Button 
+        isSelected={selectedBtn  == value.type}
+        key={value.name} onClick={() => filterFood(value.type)}>
           {value.name}
         </Button>
         ))
@@ -118,7 +120,7 @@ export const Container= styled.div`
 `;
 
 const TopContainer= styled.section`
-  min height: 150px;
+  height: 150px;
   display:flex;
   justify-content: space-between;
   padding: 15px;
@@ -127,18 +129,25 @@ const TopContainer= styled.section`
   .search{
     input{
       background-color: transparent;
-      border:1px oslid red;
+      border:1px solid red;
       color:white;
       border-radius: 5px;
       height:40px;
       font-size:15px;
       padding:0 10px;
+      &::placeholder{
+      color: white;}
     }
   }
 
   .logo img{
-  height:100px;
-  width:150px;
+  height:60px;
+  width:100px;
+  }
+
+  @media (0 < width < 600px){
+  flex-direction: column;
+  height: 150px;
   }
 `;
 
@@ -151,7 +160,7 @@ padding-bottom: 40px;
 `;
 
 export const Button=styled.button`
-  background: red;
+  background: ${({isSelected})=> (isSelected ? "green":"#ff4343")};
   border-radius: 5px;
   padding: 6px 12px;
   border: none;
