@@ -10,5 +10,5 @@ Food Restaurant website using react
     Day 6: Completed search functionality to search food on input text
     Day 7: Project complete(made responsive, optimized styles)
 
-![Uploading food land ss1.png…]()
-fig: Screenshot
+![food land ss1](https://github.com/user-attachments/assets/80b0c463-f95b-4ce8-a8c7-a0c7da6ccc4a)
+Fig: Home Page
